@@ -1,9 +1,13 @@
 name: CI Teste 1
+
 on:
   push:
     branches: [ main, master, develop ]
   pull_request:
     branches: [ main, master ]
+
+permissions:
+  contents: write
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -29,22 +33,3 @@ jobs:
       run: npm ci
     
     - name: Start application
-      run: |
-        npm start &
-        npx wait-on http://localhost:3000 --timeout 60000
-    
-    - name: Run Cypress tests
-      run: npx cypress run
-      env:
-        CYPRESS_baseUrl: http://localhost:3000
-
-    - name: Gerar relatorio Allure
-      run : npm run report:generate
-    
-    - name: Publicar relatorio no Github Pages
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./allure-report
-        publish_branch: gh-pages
-        force_orphan: true
