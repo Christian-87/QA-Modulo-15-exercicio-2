@@ -46,6 +46,7 @@ jobs:
       run: npm run report:generate
     
     - name: Publicar relatorio no Github Pages
+      if: matrix.node-version == '22.x'
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
